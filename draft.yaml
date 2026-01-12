@@ -1,0 +1,73 @@
+models:
+  Klijent:
+    klijent: string:30
+    banka: string:25
+    status: enum:aktivan,neaktivan
+    relationships:
+      hasMany: Zahtev
+
+  ProductSpecialist:
+    product_specialista: string:30
+    senioritet: enum:junior,medior,senior
+    status: enum:aktivan,neaktivan
+    relationships:
+      hasMany: Zahtev
+
+  Zahtev:
+    naziv: string:50
+    sadrzaj: text
+    status_zahteva: enum:novi,otvoren,analiza,razvoj,zatvoren
+    vrsta: enum:bug,razvoj,regulativa
+    prioritet: enum:nizak,normalan,visok,kritican
+    fajl: string nullable
+    datum_kreiranja: datetime
+    relationships:
+      belongsTo: Klijent,ProductSpecialist
+      hasMany: ObradaZahteva,ReprodukovanjeZahteva
+
+  ObradaZahteva:
+    komentar_product_sp: text nullable
+    komentar_klijenta: text nullable
+    dodatni_fajl: string nullable
+    relationships:
+      belongsTo: Zahtev
+
+  ReprodukovanjeZahteva:
+    reprodukovanje_pokusaj: integer
+    reprodukovan: boolean
+    komentar: text
+    relationships:
+      belongsTo: Zahtev
+      hasOne: ZakljucivanjeAnalize
+
+  ZakljucivanjeAnalize:
+    relationships:
+      belongsTo: ReprodukovanjeZahteva
+      hasOne: IzvestajAnalize
+
+  IzvestajAnalize:
+    izvestaj_analize: text
+    relationships:
+      belongsTo: ZakljucivanjeAnalize
+
+controllers:
+  KlijentController:
+    resource: true
+
+  ProductSpecialistController:
+    resource: true
+
+  ZahtevController:
+    resource: true
+
+  ObradaZahtevaController:
+    resource: true
+
+  ReprodukovanjeZahtevaController:
+    resource: true
+
+  ZakljucivanjeAnalizeController:
+    resource: true
+
+  IzvestajAnalizeController:
+    resource: true

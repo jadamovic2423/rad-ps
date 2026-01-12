@@ -1,0 +1,47 @@
+created:
+    - app/Http/Controllers/KlijentController.php
+    - app/Http/Controllers/ProductSpecialistController.php
+    - app/Http/Controllers/ZahtevController.php
+    - app/Http/Controllers/ObradaZahtevaController.php
+    - app/Http/Controllers/ReprodukovanjeZahtevaController.php
+    - app/Http/Controllers/ZakljucivanjeAnalizeController.php
+    - app/Http/Controllers/IzvestajAnalizeController.php
+    - database/factories/KlijentFactory.php
+    - database/factories/ProductSpecialistFactory.php
+    - database/factories/ZahtevFactory.php
+    - database/factories/ObradaZahtevaFactory.php
+    - database/factories/ReprodukovanjeZahtevaFactory.php
+    - database/factories/ZakljucivanjeAnalizeFactory.php
+    - database/factories/IzvestajAnalizeFactory.php
+    - database/migrations/2026_01_12_214131_create_klijents_table.php
+    - database/migrations/2026_01_12_214132_create_product_specialists_table.php
+    - database/migrations/2026_01_12_214133_create_zahtevs_table.php
+    - database/migrations/2026_01_12_214134_create_obrada_zahtevas_table.php
+    - database/migrations/2026_01_12_214135_create_reprodukovanje_zahtevas_table.php
+    - database/migrations/2026_01_12_214136_create_zakljucivanje_analizes_table.php
+    - database/migrations/2026_01_12_214137_create_izvestaj_analizes_table.php
+    - app/Models/Klijent.php
+    - app/Models/ProductSpecialist.php
+    - app/Models/Zahtev.php
+    - app/Models/ObradaZahteva.php
+    - app/Models/ReprodukovanjeZahteva.php
+    - app/Models/ZakljucivanjeAnalize.php
+    - app/Models/IzvestajAnalize.php
+    - tests/Feature/Http/Controllers/KlijentControllerTest.php
+    - tests/Feature/Http/Controllers/ProductSpecialistControllerTest.php
+    - tests/Feature/Http/Controllers/ZahtevControllerTest.php
+    - tests/Feature/Http/Controllers/ObradaZahtevaControllerTest.php
+    - tests/Feature/Http/Controllers/ReprodukovanjeZahtevaControllerTest.php
+    - tests/Feature/Http/Controllers/ZakljucivanjeAnalizeControllerTest.php
+    - tests/Feature/Http/Controllers/IzvestajAnalizeControllerTest.php
+updated:
+    - routes/web.php
+models:
+    User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string nullable' }
+    Klijent: { klijent: 'string:30', banka: 'string:25', status: 'enum:aktivan,neaktivan', relationships: { hasMany: Zahtev } }
+    ProductSpecialist: { product_specialista: 'string:30', senioritet: 'enum:junior,medior,senior', status: 'enum:aktivan,neaktivan', relationships: { hasMany: Zahtev } }
+    Zahtev: { naziv: 'string:50', sadrzaj: text, status_zahteva: 'enum:novi,otvoren,analiza,razvoj,zatvoren', vrsta: 'enum:bug,razvoj,regulativa', prioritet: 'enum:nizak,normalan,visok,kritican', fajl: 'string nullable', datum_kreiranja: datetime, relationships: { belongsTo: 'Klijent,ProductSpecialist', hasMany: 'ObradaZahteva,ReprodukovanjeZahteva' } }
+    ObradaZahteva: { komentar_product_sp: 'text nullable', komentar_klijenta: 'text nullable', dodatni_fajl: 'string nullable', relationships: { belongsTo: Zahtev } }
+    ReprodukovanjeZahteva: { reprodukovanje_pokusaj: integer, reprodukovan: boolean, komentar: text, relationships: { belongsTo: Zahtev, hasOne: ZakljucivanjeAnalize } }
+    ZakljucivanjeAnalize: { relationships: { belongsTo: ReprodukovanjeZahteva, hasOne: IzvestajAnalize } }
+    IzvestajAnalize: { izvestaj_analize: text, relationships: { belongsTo: ZakljucivanjeAnalize } }
