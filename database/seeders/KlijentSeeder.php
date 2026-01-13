@@ -10,13 +10,13 @@ class KlijentSeeder extends Seeder
     public function run()
     {
         Klijent::create([
-            'klijent' => 'Bole Savic',
+            'klijent' => 'Bole',
             'banka' => 'ProCredit banka',
             'status' => 'aktivan',
         ]);
 
         Klijent::create([
-            'klijent' => 'Milica Jaksic',
+            'klijent' => 'Milica',
             'banka' => 'AIK banka',
             'status' => 'aktivan',
         ]);
