@@ -53,10 +53,11 @@ class Zahtev extends Model
         return $this->belongsTo(ProductSpecialist::class);
     }
 
-    public function obradaZahtevas(): HasMany
+    public function obradaZahteva()
     {
-        return $this->hasMany(ObradaZahteva::class);
+        return $this->hasMany(ObradaZahteva::class, 'zahtev_id');
     }
+
 
     public function reprodukovanjeZahtevas(): HasMany
     {

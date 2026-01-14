@@ -21,23 +21,25 @@
         <th>Opcije</th>
     </tr>
     @foreach($tickets as $ticket)
-    <tr>
-        <td>{{ $ticket->id }}</td>
-        <td>{{ $ticket->naziv }}</td>
-        <td>
-            <a class="btn" href="{{ route('tickets.show', $ticket->id) }}">Opširnije</a>
-        </td>
-    </tr>
+        <tr>
+            <td>{{ $ticket->id }}</td>
+            <td>{{ $ticket->naziv }}</td>
+            <td>
+                <a class="btn" 
+                href="{{ session('role') === 'ps' 
+                            ? route('tickets.show', $ticket->id) 
+                            : route('client.ticket.show', $ticket->id) }}">
+                    Opširnije
+                </a>
+            </td>
+        </tr>
     @endforeach
 </table>
 
 <div class="center">
-<a class="btn" 
-   href="{{ session('role') === 'ps' ? route('product.dashboard') : route('client.dashboard') }}">
-   Nazad na početni ekran
-</a>
-
-
+    <a class="btn" href="{{ session('role') === 'ps' ? route('product.dashboard') : route('client.dashboard') }}">
+        Nazad na početni ekran
+    </a>
 </div>
 
 </body>

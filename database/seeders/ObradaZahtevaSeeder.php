@@ -22,5 +22,12 @@ class ObradaZahtevaSeeder extends Seeder
             'komentar_klijenta' => 'Potrebna brza implementacija',
             'dodatni_fajl' => null,
         ]);
+
+            ObradaZahteva::create([
+            'zahtev_id' => 3,
+            'komentar_product_sp' => 'Razrada plana razvoja',
+            'komentar_klijenta' => 'Potrebna brza implementacija',
+            'dodatni_fajl' => null,
+        ]);
     }
 }

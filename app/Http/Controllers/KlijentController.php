@@ -10,10 +10,7 @@ class KlijentController extends Controller
 {
     public function index(Request $request)
     {
-        // Uzmi sve aktivne klijente iz baze
         $klijenti = Klijent::where('status', 'aktivan')->get();
-
-        // Prosledi podatke u Blade view
         return view('tickets.client_home', compact('klijenti'));
     }
 
@@ -24,10 +21,15 @@ class KlijentController extends Controller
 
     public function list()
     {
-        // Uzmi sve zahteve za klijenta (po potrebi filtriraj po user_id iz sessiona)
+        // lista svih zahteva za klijenta
         $tickets = Zahtev::all();
 
         return view('tickets.ticket_list', compact('tickets'));
+    }
 
+    public function show($id)
+    {
+        $ticket = Zahtev::with('obradaZahteva')->findOrFail($id);
+        return view('tickets.ticket_detail_client', compact('ticket'));
     }
 }

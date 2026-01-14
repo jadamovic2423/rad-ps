@@ -13,9 +13,8 @@
         .container {
             display: flex;
             justify-content: center;
-            gap: 0; /* uklanja razmak između kolona */
+            gap: 0;
         }
-
 
         .column {
             width: 32%;
@@ -42,48 +41,44 @@
             margin-bottom: 4px;
         }
 
-            .actions {
-                position: absolute;
-                bottom: 5vh;               /* 5% visine ekrana od dna */
-                left: 50%;
-                transform: translateX(-50%);
-                width: 40%;
-                display: flex;
-                justify-content: space-between;
-                padding: 20px 40px;
-                background: #dfe9c7;
-                z-index: 10;
-            }
+        .actions {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: #dfe9c7;
+            border-top: 1px solid #333;
+        }
 
+        .actions .left,
+        .actions .right {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-            .actions .left,
-            .actions .right {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-            }
+        .actions .left {
+            align-items: flex-start;
+        }
 
-            .actions .left {
-                align-items: flex-start;
-            }
+        .actions .right {
+            align-items: flex-end;
+        }
 
-            .actions .right {
-                align-items: flex-end;
-            }
-
-            .btn {
-                display: inline-block;
-                padding: 6px 12px;
-                background: #8bc34a;
-                border: 1px solid #333;
-                text-decoration: none;
-                color: #000;
-                font-size: 22px;
-                font-weight: bold;
-                white-space: nowrap;
-                border-radius: 4px;
-            }
-
+        .btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #8bc34a;
+            border: 1px solid #333;
+            text-decoration: none;
+            color: #000;
+            font-size: 22px;
+            font-weight: bold;
+            white-space: nowrap;
+            border-radius: 4px;
+        }
 
         .overlay {
             position: fixed;
@@ -100,6 +95,29 @@
             padding: 15px;
             text-align: center;
         }
+
+.textarea-sveska {
+    width: 280px;              /* fiksna širina unutar modala */
+    height: 90px;              /* za 3 linije */
+    line-height: 30px;
+    font-size: 16px;
+    padding: 4px 12px;
+    resize: none;
+    background-color: transparent;
+
+    border: none; /* uklanja okvir oko polja */
+
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 29px,
+        #000 30px
+    );
+    background-size: calc(100% - 24px) 30px;
+    background-position: left 12px top 0px;
+    color: #000;
+}
+
     </style>
 </head>
 <body>
@@ -108,7 +126,6 @@
     <!-- Komentari -->
     <div class="column">
         <h3>Komentari</h3>
-        {{-- Ovde možeš prikazati komentare --}}
         <p>Nema komentara.</p>
     </div>
 
@@ -116,53 +133,37 @@
     <div class="column">
         <h3>Zahtev {{ $ticket->id }}</h3>
 
-        <div class="field">
-            <strong>Naziv:</strong>
-            <span>{{ $ticket->naziv  }}</span>
-        </div>
-
-        <div class="field">
-            <strong>Opis:</strong>
-            <span>{{ $ticket->sadrzaj }}</span>
-        </div>
-
-        <div class="field">
-            <strong>Vrsta:</strong>
-            <span>{{ $ticket->vrsta }}</span>
-        </div>
-
-        <div class="field">
-            <strong>Prioritet:</strong>
-            <span>{{ $ticket->prioritet }}</span>
-        </div>
-
-        <div class="field">
-            <strong>Status:</strong>
-            <span>{{ $ticket->status_zahteva }}</span>
-        </div>
-
-        <div class="field">
-            <strong>Fajlovi:</strong>
-            <span>/</span>
-        </div>
-
+        <div class="field"><strong>Naziv:</strong> <span>{{ $ticket->naziv }}</span></div>
+        <div class="field"><strong>Opis:</strong> <span>{{ $ticket->sadrzaj }}</span></div>
+        <div class="field"><strong>Vrsta:</strong> <span>{{ $ticket->vrsta }}</span></div>
+        <div class="field"><strong>Prioritet:</strong> <span>{{ $ticket->prioritet }}</span></div>
+        <div class="field"><strong>Status:</strong> <span>{{ $ticket->status_zahteva }}</span></div>
+        <div class="field"><strong>Fajlovi:</strong> <span>/</span></div>
     </div>
 
     <!-- Komunikacija -->
     <div class="column">
         <h3>Komunikacija</h3>
-        {{-- Ovde možeš prikazati poruke --}}
-        <p>Nema poruka.</p>
+        @php $broj = 1; @endphp
+        @foreach($ticket->obradaZahteva as $obrada)
+            @if($obrada->komentar_product_sp)
+                <p>{{ $broj++ }}. PS: {{ $obrada->komentar_product_sp }}</p>
+            @endif
+            @if($obrada->komentar_klijenta)
+                <p>{{ $broj++ }}. K: {{ $obrada->komentar_klijenta }}</p>
+            @endif
+        @endforeach
+        @if($broj === 1)
+            <p>Nema poruka.</p>
+        @endif
     </div>
 </div>
+
 <div class="actions">
-    <!-- Leva kolona -->
     <div class="left">
         <a class="btn" href="{{ route('tickets.new_tickets') }}">Nazad na listu zahteva</a>
         <a class="btn" href="{{ route('tickets.show', $ticket->id) }}?modal=conclusion">Zaključak</a>
     </div>
-
-    <!-- Desna kolona -->
     <div class="right">
         <a class="btn" href="{{ route('tickets.show', $ticket->id) }}?modal=message">Pošalji poruku</a>
         <a class="btn" href="{{ route('tickets.show', $ticket->id) }}?modal=comment">Unesi komentar</a>
@@ -177,7 +178,12 @@
 <div class="overlay">
     <div class="modal">
         @if(request('modal') === 'message')
-            @include('tickets.modals.message')
+            <h3>Poruka</h3>
+            <form method="POST" action="{{ route('tickets.message.ps', $ticket->id) }}">
+                @csrf
+                <textarea name="poruka" class="textarea-sveska" placeholder=""></textarea>
+                <button type="submit" class="btn">Pošalji</button>
+            </form>
         @elseif(request('modal') === 'comment')
             @include('tickets.modals.comment')
         @elseif(request('modal') === 'status')
@@ -189,9 +195,7 @@
         @elseif(request('modal') === 'conclusion')
             @include('tickets.modals.conclusion')
         @endif
-
         <br>
-        <a class="btn" href="{{ route('tickets.show', $ticket->id) }}">Zatvori</a>
     </div>
 </div>
 @endif

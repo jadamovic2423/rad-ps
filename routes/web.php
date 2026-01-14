@@ -91,3 +91,17 @@ Route::get('/tickets/{id}', [ProductSpecialistController::class, 'show'])
 
 Route::get('/client/ticket/list', [KlijentController::class, 'list'])
     ->name('client.ticket.list');
+
+Route::get('/client/tickets/{id}', [KlijentController::class, 'show'])
+    ->name('client.ticket.show');
+
+
+Route::post('/tickets/{id}/conclusion', [ZahtevController::class, 'storeConclusion'])->name('tickets.conclusion');
+Route::post('/tickets/{id}/comment', [ZahtevController::class, 'storeComment'])->name('tickets.comment');
+Route::post('/tickets/{id}/message-klijent', [ZahtevController::class, 'storeMessageKlijent'])->name('tickets.message.klijent');
+Route::post('/tickets/{id}/message-ps', [ZahtevController::class, 'storeMessagePS'])->name('tickets.message.ps');
+Route::post('/tickets/{id}/status', [ZahtevController::class, 'updateStatus'])->name('tickets.status');
+Route::post('/tickets/{id}/type', [ZahtevController::class, 'updateType'])->name('tickets.type');
+Route::post('/tickets/{id}/reproduced', [ZahtevController::class, 'storeReproduced'])->name('tickets.reproduced');
+
+
