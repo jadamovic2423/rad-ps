@@ -24,15 +24,13 @@
         button { background:#8bc34a; border:1px solid #333; }
 
         td.options {
-    white-space: nowrap;       /* sprečava prelamanje dugmadi */
-    width: 1%;                 /* kolona zauzima minimalnu širinu */
-}
-
-td.options .btn {
-    display: inline-block;     /* dugmad stoje jedno pored drugog */
-    margin: 0 2px;             /* mali razmak između dugmadi */
-}
-
+            white-space: nowrap;
+            width: 1%;
+        }
+        td.options .btn {
+            display: inline-block;
+            margin: 0 2px;
+        }
     </style>
 </head>
 <body>
@@ -48,13 +46,15 @@ td.options .btn {
     </tr>
     @foreach($tickets as $ticket)
         <tr>
-            <td>{{ $ticket->id }}</td>
+            <td>{{ sprintf('%04d', $ticket->id) }}</td>
             <td>{{ $ticket->naziv }}</td>
             <td class="options">
                 <a class="btn" href="{{ route('tickets.show', $ticket->id) }}">Opširnije</a>
-                <a class="btn" href="{{ route('tickets.delegate_ticket', $ticket->id) }}">Delegiraj</a>
+                {{-- klik vodi na istu rutu sa query parametrima --}}
+                <a class="btn" href="{{ route('tickets.new_tickets', ['modal' => 'delegate', 'id' => $ticket->id]) }}">
+                    Delegiraj
+                </a>
             </td>
-
         </tr>
     @endforeach
 </table>
@@ -63,7 +63,7 @@ td.options .btn {
     <a class="btn" href="{{ route('product.dashboard') }}">Nazad na početni ekran</a>
 </div>
 
-{{-- MODAL ZA DELEGIRANJE --}}
+{{-- MODAL ZA DELEGIRANJE – prikazuje se samo ako su parametri prosleđeni --}}
 @if(request('modal') === 'delegate' && request('id'))
     @php
         $ticket = $tickets->firstWhere('id', request('id'));
@@ -71,10 +71,7 @@ td.options .btn {
     @endphp
     <div class="overlay">
         <div class="modal">
-            <h3>Delegiranje zahteva</h3>
-            <p><strong>ID:</strong> {{ $ticket->id }}</p>
-            <p><strong>Naziv:</strong> {{ $ticket->naziv }}</p>
-
+            <h3>Delegiranje</h3>
             <form method="POST" action="{{ route('tickets.delegate.store', $ticket->id) }}">
                 @csrf
                 <label>Product specijalista:</label>
@@ -83,10 +80,11 @@ td.options .btn {
                         <option value="{{ $ps->id }}">{{ $ps->product_specialista }}</option>
                     @endforeach
                 </select>
-                <p>Status zahteva biće: <strong>Otvoren</strong></p>
+                <p>Sa ovom izmenom novi status zahteva je <strong>"Otvoren".</strong></p>
                 <button type="submit">Delegiraj</button>
             </form>
             <br>
+            <a class="btn" href="{{ route('tickets.new_tickets') }}">Zatvori</a>
         </div>
     </div>
 @endif

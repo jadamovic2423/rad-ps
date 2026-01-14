@@ -16,13 +16,7 @@
 <body>
 
 <div class="modal">
-    <h3>Delegiranje zahteva</h3>
-
-    <p><strong>ID:</strong> {{ $ticket->id }}</p>
-    <p><strong>Naziv:</strong> {{ $ticket->naziv }}</p>
-
-    <a class="btn" href="{{ route('tickets.show', $ticket->id) }}">Opširnije</a>
-
+    <h3>Delegiranje</h3>
     <form method="POST" action="{{ route('tickets.delegate.store', $ticket->id) }}">
         @csrf
         <label>Product specijalista:</label>
@@ -32,7 +26,7 @@
             @endforeach
         </select>
 
-        <p>Status zahteva biće: <strong>Otvoren</strong></p>
+        <p>Sa ovom izmenom novi status zahteva je <strong>"Otvoren".</strong></p>
 
         <button type="submit">Delegiraj</button>
     </form>

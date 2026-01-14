@@ -125,31 +125,88 @@
     color: #000;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li a,
+.pagination li span {
+    display: inline-block;
+    width: 20px;       /* manja širina kružića */
+    height: 20px;      /* manja visina kružića */
+    line-height: 22px; /* centriranje teksta */
+    font-size: 12px;   /* manji font */
+    text-align: center;
+    border-radius: 50%;
+    background: #8bc34a;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    border: 1px solid #333;
+}
+
+
+.pagination li.active span {
+    background: #333;
+    color: #fff;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;   /* vertikalni raspored */
+}
+
+.column .content {
+    flex: 1;                  /* zauzima sav prostor iznad */
+}
+
+.column .pagination {
+    margin-top: auto;         /* gura paginaciju na dno */
+    justify-content: center;
+    align-self: center;       /* centriraj horizontalno */
+}
+
+
+.column .messages {
+    flex: 1;                  /* zauzima sav prostor iznad */
+}
+
+
     </style>
 </head>
 <body>
 <h1 style="text-align:center; font-size:28px; margin:20px 0; font-weight:bold;"> Tiketing sistem </h1>
 <div class="container">
     <!-- Komentari -->
-        <div class="column">
+       <div class="column">
             <h3>Komentari</h3>
-            @php $broj = 1; @endphp
+            <div class="content">
+                @foreach($komentari as $repro)
+                    @if($repro->komentar)
+                        <p>PS {{ $repro->created_at->format('d.m.Y H:i') }}: {{ $repro->komentar }}</p>
+                    @endif
+                @endforeach
 
-            @foreach($ticket->reprodukovanja()->orderBy('created_at','desc')->get() as $repro)
-                @if($repro->komentar)
-                    <p>{{ $broj++ }}. PS: {{ $repro->komentar }}</p>
+                @if($komentari->isEmpty())
+                    <p>Nema komentara.</p>
                 @endif
-            @endforeach
+            </div>
 
-            @if($broj === 1)
-                <p>Nema komentara.</p>
-            @endif
+            {{-- paginacija za komentare --}}
+            <div class="pagination">
+                {{ $komentari->links('pagination::bootstrap-5') }}
+            </div>
         </div>
 
 
     <!-- Zahtev -->
     <div class="column">
-        <h3>Zahtev {{ $ticket->id }}</h3>
+        <h3>Zahtev {{ str_pad($ticket->id, 4, '0', STR_PAD_LEFT) }}</h3>
+
 
         <div class="field"><strong>Naziv:</strong> <span>{{ $ticket->naziv }}</span></div>
         <div class="field"><strong>Opis:</strong> <span>{{ $ticket->sadrzaj }}</span></div>
@@ -166,19 +223,27 @@
     <!-- Komunikacija -->
     <div class="column">
         <h3>Komunikacija</h3>
-        @php $broj = 1; @endphp
-        @foreach($ticket->obradaZahteva as $obrada)
-            @if($obrada->komentar_product_sp)
-                <p>{{ $broj++ }}. PS: {{ $obrada->komentar_product_sp }}</p>
+        <div class="content">
+            @foreach($obrada as $o)
+                @if($o->komentar_product_sp)
+                    <p>PS {{ $o->created_at->format('d.m.Y H:i') }}: {{ $o->komentar_product_sp }}</p>
+                @endif
+                @if($o->komentar_klijenta)
+                    <p>K {{ $o->created_at->format('d.m.Y H:i') }}: {{ $o->komentar_klijenta }}</p>
+                @endif
+            @endforeach
+
+            @if($obrada->isEmpty())
+                <p>Nema poruka.</p>
             @endif
-            @if($obrada->komentar_klijenta)
-                <p>{{ $broj++ }}. K: {{ $obrada->komentar_klijenta }}</p>
-            @endif
-        @endforeach
-        @if($broj === 1)
-            <p>Nema poruka.</p>
-        @endif
+        </div>
+
+        {{-- paginacija za komunikaciju --}}
+        <div class="pagination">
+            {{ $obrada->links('pagination::bootstrap-5') }}
+        </div>
     </div>
+
 </div>
 
 <div class="actions">

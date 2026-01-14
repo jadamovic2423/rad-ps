@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Zahtev;
 use App\Models\User;
 use App\Models\ProductSpecialist;
+use App\Models\ObradaZahteva;
 
 class ObradaZahtevaController extends Controller
 {
@@ -19,16 +21,25 @@ class ObradaZahtevaController extends Controller
     }
 
 
-    public function storeDelegation($id)
+    public function storeDelegation(Request $request, $id)
     {
         $ticket = Zahtev::findOrFail($id);
-        $ticket->product_specialist_id = request('product_specialist_id');
-        $ticket->status_zahteva = 'otvoren';
-        $ticket->save();
+
+        $ticket->update([
+            'status_zahteva' => 'otvoren',
+            'product_specialist_id' => $request->input('product_specialist_id')
+        ]);
+
+        ObradaZahteva::create([
+            'zahtev_id' => $ticket->id,
+            'komentar_product_sp' => 'Zahtev je uzet u dalju obradu.',
+        ]);
 
         return redirect()->route('tickets.new_tickets')
-                        ->with('success', 'Zahtev je uspešno delegiran.');
+                        ->with('success', 'Zahtev je delegiran i obaveštenje je poslato klijentu.');
     }
+
+
 
 }
 

@@ -136,6 +136,55 @@
 }
 
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+}
+
+.pagination li a,
+.pagination li span {
+    display: inline-block;
+    width: 20px;       /* manja širina kružića */
+    height: 20px;      /* manja visina kružića */
+    line-height: 22px; /* centriranje teksta */
+    font-size: 12px;   /* manji font */
+    text-align: center;
+    border-radius: 50%;
+    background: #8bc34a;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    border: 1px solid #333;
+}
+
+
+.pagination li.active span {
+    background: #333;
+    color: #fff;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;   /* vertikalni raspored */
+}
+
+.column .content {
+    flex: 1;                  /* zauzima sav prostor iznad */
+}
+
+.column .pagination {
+    margin-top: auto;         /* gura paginaciju na dno */
+    justify-content: center;
+    align-self: center;       /* centriraj horizontalno */
+}
+
+
+.column .messages {
+    flex: 1;                  /* zauzima sav prostor iznad */
+}
 
     </style>
 </head>
@@ -145,7 +194,7 @@
 <div class="container">
     <!-- Zahtev -->
     <div class="column">
-        <h3>Zahtev {{ $ticket->id }}</h3>
+        <h3>Zahtev {{ str_pad($ticket->id, 4, '0', STR_PAD_LEFT) }}</h3>
 
         <div class="field"><strong>Naziv:</strong> <span>{{ $ticket->naziv }}</span></div>
         <div class="field"><strong>Opis:</strong> <span>{{ $ticket->sadrzaj }}</span></div>
@@ -162,19 +211,34 @@
     <!-- Komunikacija -->
     <div class="column">
         <h3>Komunikacija</h3>
-        @php $broj = 1; @endphp
-        @foreach($ticket->obradaZahteva as $obrada)
+
+        {{-- fallback da se $komunikacija uvek definiše --}}
+        @php
+            $komunikacija = $komunikacija ?? $ticket->obradaZahteva()->orderBy('created_at','desc')->paginate(5);
+            $broj = ($komunikacija->currentPage() - 1) * $komunikacija->perPage() + 1;
+        @endphp
+
+        @foreach($komunikacija as $obrada)
             @if($obrada->komentar_product_sp)
-                <p>{{ $broj++ }}. PS: {{ $obrada->komentar_product_sp }}</p>
+                <p>PS {{ $obrada->created_at->format('d.m.Y H:i') }}: {{ $obrada->komentar_product_sp }}</p>
             @endif
             @if($obrada->komentar_klijenta)
-                <p>{{ $broj++ }}. K: {{ $obrada->komentar_klijenta }}</p>
+                <p> K {{ $obrada->created_at->format('d.m.Y H:i') }}: {{ $obrada->komentar_klijenta }}</p>
             @endif
         @endforeach
-        @if($broj === 1)
+
+        @if($komunikacija->isEmpty())
             <p>Nema poruka.</p>
         @endif
+
+        {{-- Linkovi za paginaciju --}}
+        <div style="text-align:center; margin-top:15px;">
+            {{ $komunikacija->links('pagination::bootstrap-5') }}
+
+        </div>
     </div>
+
+
 </div>
 
 <div class="actions">

@@ -37,10 +37,10 @@
 
     <p>
         Zahtev zaveden pod ID:
-        <strong>{{ $ticketId }}</strong>
+        <strong>{{ sprintf('%04d', $ticketId) }}</strong>
     </p>
 
-    <<a href="{{ route('client.dashboard') }}" class="btn">
+    <a href="{{ route('client.dashboard') }}" class="btn">
         Nazad na početni ekran
     </a>
 

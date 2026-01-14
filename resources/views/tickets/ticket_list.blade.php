@@ -42,7 +42,7 @@ table {
     </tr>
     @foreach($tickets as $ticket)
         <tr>
-            <td>{{ $ticket->id }}</td>
+            <td>{{ sprintf('%04d', $ticket->id) }}</td>
             <td>{{ $ticket->naziv }}</td>
             <td class="options-col">
                 <a class="btn" 

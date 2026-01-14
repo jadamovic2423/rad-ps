@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Zahtev;   // <- dodaj import modela Zahtev
 use App\Models\ProductSpecialist;
+use App\Models\ObradaZahteva;
 
 class ProductSpecialistController extends Controller
 {
@@ -44,7 +45,19 @@ class ProductSpecialistController extends Controller
         $ticket = Zahtev::findOrFail($id);
 
         if (session('role') === 'ps') {
-            return view('tickets.ticket_detail_ps', compact('ticket'));
+            // Paginacija za komunikaciju
+            $obrada = ObradaZahteva::where('zahtev_id', $ticket->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate(5, ['*'], 'komunikacija_page');
+
+            // Paginacija za komentare (bez no_activity i development)
+            $komentari = $ticket->reprodukovanja()
+                ->whereNotNull('komentar')
+                ->whereNotIn('komentar', ['no_activity', 'development'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(5, ['*'], 'komentari_page');
+
+            return view('tickets.ticket_detail_ps', compact('ticket', 'obrada', 'komentari'));
         }
 
         return view('tickets.ticket_detail_client', compact('ticket'));

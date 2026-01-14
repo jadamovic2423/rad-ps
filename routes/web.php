@@ -20,8 +20,7 @@ Route::post('/access/login', [AccessController::class, 'login'])->name('access.l
 /**
  * HiFi ekran 2 – Početni ekran (klijent)
  */
-Route::get('/client/ticket/list', [KlijentController::class, 'index'])
-    ->name('client.ticket.list');
+
 
 Route::get('/client/dashboard', function () {
     return view('tickets.client_home');
@@ -139,3 +138,6 @@ Route::post('/tickets/{id}/conclusion', [ZahtevController::class, 'storeConclusi
 
 Route::post('/tickets/{id}/comment', [ZahtevController::class, 'storeComment'])
     ->name('tickets.comment.ps');
+
+Route::get('/client/tickets/{id}', [KlijentController::class, 'show'])
+    ->name('client.ticket.show');

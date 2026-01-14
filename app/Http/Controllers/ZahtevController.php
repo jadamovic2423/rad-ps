@@ -35,10 +35,19 @@ class ZahtevController extends Controller
         return Zahtev::create($data);
     }
 
-    public function show($id) {
-        $ticket = Zahtev::with('obradaZahteva')->findOrFail($id);
-        return view('tickets.ticket_detail_ps', compact('ticket'));
+    public function show($id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+
+        // Paginacija komunikacije – npr. 5 poruka po strani
+        $komunikacija = $ticket->obradaZahteva()
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(5);
+
+        return view('tickets.ticket_detail_client', compact('ticket', 'komunikacija'));
     }
+
+
 
     public function update(Request $request, Zahtev $zahtev) {
         $data = $request->validate([

@@ -33,9 +33,18 @@ class KlijentController extends Controller
 
     public function show($id)
     {
-        $ticket = Zahtev::with('obradaZahteva')->findOrFail($id);
-        return view('tickets.ticket_detail_client', compact('ticket'));
+        $ticket = Zahtev::findOrFail($id);
+
+        // Paginacija komunikacije – npr. 5 poruka po strani
+        $komunikacija = $ticket->obradaZahteva()
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(5);
+
+        return view('tickets.ticket_detail_client', compact('ticket', 'komunikacija'));
     }
+
+
+
 
     public function store(Request $request)
     {
@@ -93,6 +102,18 @@ class KlijentController extends Controller
         }
 
         return redirect()->route('client.ticket.show', $ticket->id);
+    }
+
+    public function showClientTicket($id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+
+        // Paginacija komunikacije, npr. 5 poruka po strani
+        $komunikacija = $ticket->obradaZahteva()
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(5);
+
+        return view('tickets.ticket_detail_client', compact('ticket', 'komunikacija'));
     }
 
 
