@@ -23,7 +23,7 @@
     @foreach($tickets as $ticket)
     <tr>
         <td>{{ $ticket->id }}</td>
-        <td>{{ $ticket->title }}</td>
+        <td>{{ $ticket->naziv }}</td>
         <td>
             <a class="btn" href="{{ route('tickets.show', $ticket->id) }}">Opširnije</a>
         </td>
