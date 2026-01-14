@@ -14,7 +14,10 @@
             display: flex;
             justify-content: center;
             gap: 0;
+            width: 60%;       /* ista širina kao tabela */
+            margin: 0 auto;   /* centriraj */
         }
+
 
         .column {
             width: 32%;
@@ -32,14 +35,19 @@
             border-bottom: 1px solid #333;
         }
 
-        .field {
-            margin-bottom: 10px;
-        }
+.field {
+    display: flex;       /* polje i vrednost u jednom redu */
+    gap: 8px;            /* razmak između labela i vrednosti */
+    margin-bottom: 10px;
+    align-items: center; /* vertikalno poravnanje */
+}
 
-        .field strong {
-            display: block;
-            margin-bottom: 4px;
-        }
+.field strong {
+    margin: 0;
+    font-weight: bold;
+    white-space: nowrap; /* da labela ne prelazi u novi red */
+}
+
 
         .actions {
             width: 100%;
@@ -138,7 +146,11 @@
         <div class="field"><strong>Vrsta:</strong> <span>{{ $ticket->vrsta }}</span></div>
         <div class="field"><strong>Prioritet:</strong> <span>{{ $ticket->prioritet }}</span></div>
         <div class="field"><strong>Status:</strong> <span>{{ $ticket->status_zahteva }}</span></div>
-        <div class="field"><strong>Fajlovi:</strong> <span>/</span></div>
+        <div class="field">
+            <strong>Fajlovi:</strong>
+            <span>{{ $ticket->fajl ?? '/' }}</span>
+        </div>
+
     </div>
 
     <!-- Komunikacija -->
@@ -184,21 +196,28 @@
                 <textarea name="poruka" class="textarea-sveska" placeholder=""></textarea>
                 <button type="submit" class="btn">Pošalji</button>
             </form>
+
         @elseif(request('modal') === 'comment')
-            @include('tickets.modals.comment')
+            @include('tickets.modals.comment', ['ticket' => $ticket])
+
         @elseif(request('modal') === 'status')
-            @include('tickets.modals.status')
+            @include('tickets.modals.status', ['ticket' => $ticket])
+
         @elseif(request('modal') === 'type')
-            @include('tickets.modals.type')
+            @include('tickets.modals.type', ['ticket' => $ticket])
+
         @elseif(request('modal') === 'reproduced')
-            @include('tickets.modals.reproduced')
+            @include('tickets.modals.reproduced', ['ticket' => $ticket])
+
         @elseif(request('modal') === 'conclusion')
-            @include('tickets.modals.conclusion')
+            @include('tickets.modals.conclusion', ['ticket' => $ticket])
         @endif
+
         <br>
     </div>
 </div>
 @endif
+
 
 </body>
 </html>

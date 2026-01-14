@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('naziv', 50);
             $table->text('sadrzaj');
             $table->enum('status_zahteva', ["novi","otvoren","analiza","razvoj","zatvoren"]);
-            $table->enum('vrsta', ["bug","razvoj","regulativa"]);
+            $table->enum('vrsta', ["bug","novi razvoj","regulativa"]);
             $table->enum('prioritet', ["nizak","normalan","visok","kritican"]);
             $table->string('fajl')->nullable();
             $table->dateTime('datum_kreiranja');

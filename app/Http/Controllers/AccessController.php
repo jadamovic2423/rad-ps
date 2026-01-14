@@ -33,7 +33,7 @@ class AccessController extends Controller
                     'username' => $klijent->klijent,
                 ]);
 
-                return redirect()->route('client.ticket.list');
+                return redirect()->route('client.dashboard');
             }
 
             return back()->withErrors(['username' => 'Klijent ne postoji ili nije aktivan'])->withInput();

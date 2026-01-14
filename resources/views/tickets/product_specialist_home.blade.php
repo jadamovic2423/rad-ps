@@ -81,7 +81,7 @@
 
         <div class="actions">
             {{-- Pregled svih zahteva --}}
-            <a href="{{ route('tickets.new_tickets') }}">
+            <a href="{{ route('tickets.list') }}">
                 Pregled liste zahteva
             </a>
 

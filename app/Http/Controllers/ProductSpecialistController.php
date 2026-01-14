@@ -66,6 +66,28 @@ class ProductSpecialistController extends Controller
 
         return view('tickets.delegate_ticket', compact('tickets', 'specialists'));
     }
+
+
+    public function updateStatus(Request $request, $id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+        $ticket->status_zahteva = $request->input('status');
+        $ticket->save();
+
+        return redirect()->route('tickets.show', $ticket->id);
+    }
+
+    public function updateType(Request $request, $id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+        $ticket->vrsta = $request->input('type');
+        $ticket->save();
+
+        return redirect()->route('tickets.show', $ticket->id);
+    }
+
+
+
 }
 
 

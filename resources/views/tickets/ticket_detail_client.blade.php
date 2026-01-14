@@ -115,6 +115,28 @@
             background-position: left 12px top 0px;
             color: #000;
         }
+
+        .field {
+    display: flex;
+    gap: 8px;          /* mali razmak između polja i vrednosti */
+    margin-bottom: 10px;
+}
+
+.field strong {
+    margin: 0;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    width: 60%;       /* ista širina kao tabela */
+    margin: 0 auto;   /* centriraj */
+}
+
+
+
     </style>
 </head>
 <body>
@@ -130,7 +152,11 @@
         <div class="field"><strong>Vrsta:</strong> <span>{{ $ticket->vrsta }}</span></div>
         <div class="field"><strong>Prioritet:</strong> <span>{{ $ticket->prioritet }}</span></div>
         <div class="field"><strong>Status:</strong> <span>{{ $ticket->status_zahteva }}</span></div>
-        <div class="field"><strong>Fajlovi:</strong> <span>/</span></div>
+        <div class="field">
+            <strong>Fajlovi:</strong>
+            <span>{{ $ticket->fajl ?? '/' }}</span>
+        </div>
+
     </div>
 
     <!-- Komunikacija -->
@@ -173,7 +199,7 @@
                 <button type="submit" class="btn">Pošalji</button>
             </form>
         @elseif(request('modal') === 'file')
-            @include('tickets.modals.file')
+            @include('tickets.modals.file', ['ticket' => $ticket])
         @endif
         <br>
     </div>

@@ -11,14 +11,16 @@
             font-family: Arial, sans-serif;
         }
         button {
-            display: block;
-            margin: 15px auto;
-            padding: 12px 25px;
-            background-color: #7fc85c;
-            border: 1px solid #333;
-            cursor: pointer;
-            width: 200px;
-        }
+    display: block;
+    margin: 15px auto;
+    padding: 12px 25px;
+    background-color: #7fc85c;
+    border: 1px solid #333;
+    cursor: pointer;
+    width: 200px;
+    color: black; /* tekst crn */
+}
+
         .logout {
             position: absolute;
             top: 20px;
@@ -27,6 +29,12 @@
             padding: 8px 12px;
             background: #ddd;
         }
+
+        a {
+            color: black;            /* tekst crn */
+            text-decoration: none;   /* uklanja podvlačenje */
+        }
+
     </style>
 </head>
 

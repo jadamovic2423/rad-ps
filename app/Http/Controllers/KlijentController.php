@@ -61,9 +61,15 @@ class KlijentController extends Controller
         $ticket->product_specialist_id = 1; 
 
         if ($request->hasFile('fajl')) {
-            $path = $request->file('fajl')->store('tickets', 'public');
-            $ticket->fajl = $path;
+            $file = $request->file('fajl');
+            $originalName = $file->getClientOriginalName(); // ovo je originalni naziv
+
+            // snimi fajl sa originalnim imenom
+            $path = $file->storeAs('tickets', $originalName, 'public');
+
+            $ticket->fajl = $originalName; // ili $path ako želiš putanju
         }
+
 
         $ticket->save();
 
@@ -71,6 +77,24 @@ class KlijentController extends Controller
         return view('tickets.success', ['ticketId' => $ticket->id]);
 
     }
+
+    public function uploadFile(Request $request, $id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $originalName = $file->getClientOriginalName();
+            $path = $file->storeAs('tickets', $originalName, 'public');
+
+            // snimi podatke u bazu
+            $ticket->fajl = $originalName;
+            $ticket->save();
+        }
+
+        return redirect()->route('client.ticket.show', $ticket->id);
+    }
+
 
 
 }

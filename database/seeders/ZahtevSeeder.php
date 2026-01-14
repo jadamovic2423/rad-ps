@@ -27,7 +27,7 @@ class ZahtevSeeder extends Seeder
             'naziv' => 'Dodavanje nove funkcionalnosti',
             'sadrzaj' => 'Potrebno dodati novu funkcionalnost X',
             'status_zahteva' => 'novi',
-            'vrsta' => 'razvoj',
+            'vrsta' => 'novi razvoj',
             'prioritet' => 'normalan',
             'fajl' => null,
             'datum_kreiranja' => now(),

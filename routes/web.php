@@ -113,14 +113,23 @@ Route::post('/tickets/{id}/conclusion', [ZahtevController::class, 'storeConclusi
 Route::post('/tickets/{id}/comment', [ZahtevController::class, 'storeComment'])->name('tickets.comment');
 Route::post('/tickets/{id}/message-klijent', [ZahtevController::class, 'storeMessageKlijent'])->name('tickets.message.klijent');
 Route::post('/tickets/{id}/message-ps', [ZahtevController::class, 'storeMessagePS'])->name('tickets.message.ps');
-Route::post('/tickets/{id}/status', [ZahtevController::class, 'updateStatus'])->name('tickets.status');
-Route::post('/tickets/{id}/type', [ZahtevController::class, 'updateType'])->name('tickets.type');
 Route::post('/tickets/{id}/reproduced', [ZahtevController::class, 'storeReproduced'])->name('tickets.reproduced');
 
 Route::post('/klijent/login', function (Request $request) {
     $credentials = $request->only('email', 'password');
     if (Auth::guard('klijent')->attempt($credentials)) {
-        return redirect()->intended('/client/dashboard');
+        return redirect()->route('client.dashboard'); // uvek vodi na dashboard
     }
     return back()->withErrors(['email' => 'Pogrešni podaci']);
 });
+
+Route::post('/client/tickets/{id}/file', [KlijentController::class, 'uploadFile'])
+    ->name('tickets.file.upload');
+
+
+Route::post('/tickets/{id}/status', [ProductSpecialistController::class, 'updateStatus'])
+    ->name('tickets.updateStatus');
+
+
+Route::post('/tickets/{id}/type', [ProductSpecialistController::class, 'updateType'])
+    ->name('tickets.type');
