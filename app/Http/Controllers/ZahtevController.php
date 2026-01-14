@@ -93,15 +93,21 @@ class ZahtevController extends Controller
     // -------------------
 
      public function storeComment(Request $request, $id)
-    {
-        $ticket = Zahtev::findOrFail($id);
+        {
+            $ticket = Zahtev::findOrFail($id);
 
-        $ticket->obradaZahteva()->create([
-            'komentar_product_sp' => $request->input('comment'),
-        ]);
+            // kreiraj novi zapis u reprodukovanje_zahtevas
+            $ticket->reprodukovanja()->create([
+                'reprodukovanje_pokusaj' => $ticket->reprodukovanja()->count() + 1,
+                'reprodukovan' => true, // ili false, zavisi od logike
+                'komentar' => $request->input('comment'),
+            ]);
 
-        return redirect()->route('tickets.show', $ticket->id);
-    }
+            return redirect()->route('tickets.show', $ticket->id);
+        }
+
+
+
 
 
 

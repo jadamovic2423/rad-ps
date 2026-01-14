@@ -131,10 +131,21 @@
 <h1 style="text-align:center; font-size:28px; margin:20px 0; font-weight:bold;"> Tiketing sistem </h1>
 <div class="container">
     <!-- Komentari -->
-    <div class="column">
-        <h3>Komentari</h3>
-        <p>Nema komentara.</p>
-    </div>
+        <div class="column">
+            <h3>Komentari</h3>
+            @php $broj = 1; @endphp
+
+            @foreach($ticket->reprodukovanja()->orderBy('created_at','desc')->get() as $repro)
+                @if($repro->komentar)
+                    <p>{{ $broj++ }}. PS: {{ $repro->komentar }}</p>
+                @endif
+            @endforeach
+
+            @if($broj === 1)
+                <p>Nema komentara.</p>
+            @endif
+        </div>
+
 
     <!-- Zahtev -->
     <div class="column">
