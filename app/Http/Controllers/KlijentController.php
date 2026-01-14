@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Klijent;
 use App\Models\Zahtev;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;  
+
+
 
 class KlijentController extends Controller
 {
@@ -32,4 +36,41 @@ class KlijentController extends Controller
         $ticket = Zahtev::with('obradaZahteva')->findOrFail($id);
         return view('tickets.ticket_detail_client', compact('ticket'));
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'naziv'     => 'required|string|max:255',
+            'vrsta'     => 'required|string',
+            'prioritet' => 'required|string',
+            'sadrzaj'   => 'required|string',
+            'fajl'      => 'nullable|file|max:2048',
+        ]);
+
+        $ticket = new Zahtev();
+        $ticket->naziv           = $validated['naziv'];
+        $ticket->vrsta           = $validated['vrsta'];
+        $ticket->prioritet       = $validated['prioritet'];
+        $ticket->sadrzaj         = $validated['sadrzaj'];
+        $ticket->status_zahteva  = 'novi'; // koristi vrednosti iz enum-a
+        $ticket->datum_kreiranja = Carbon::now();
+
+        // 🔑 obavezne kolone iz migracije
+        // trenutno zakucane vrednosti da constrainti ne pucaju
+        $ticket->klijent_id = 1; 
+        $ticket->product_specialist_id = 1; 
+
+        if ($request->hasFile('fajl')) {
+            $path = $request->file('fajl')->store('tickets', 'public');
+            $ticket->fajl = $path;
+        }
+
+        $ticket->save();
+
+        // nakon kreiranja prikazuje success.blade.php
+        return view('tickets.success', ['ticketId' => $ticket->id]);
+
+    }
+
+
 }

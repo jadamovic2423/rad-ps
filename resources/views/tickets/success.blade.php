@@ -40,9 +40,10 @@
         <strong>{{ $ticketId }}</strong>
     </p>
 
-    <a href="{{ route('home') }}" class="btn">
+    <<a href="{{ route('client.dashboard') }}" class="btn">
         Nazad na početni ekran
     </a>
+
 </div>
 
 </body>

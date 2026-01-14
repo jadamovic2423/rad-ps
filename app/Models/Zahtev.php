@@ -43,10 +43,11 @@ class Zahtev extends Model
         ];
     }
 
-    public function klijent(): BelongsTo
+    public function klijent()
     {
         return $this->belongsTo(Klijent::class);
     }
+
 
     public function productSpecialist(): BelongsTo
     {

@@ -58,9 +58,11 @@ Route::post('/tickets/store', [KlijentController::class, 'store'])->name('ticket
 /**
  * HiFi ekran 4 – Uspešno kreiran zahtev
  */
+
 Route::get('/client/ticket/success/{ticketId}', function ($ticketId) {
-    return view('tickets.success', compact('ticketId'));
+    return view('tickets.success', ['ticket' => $ticket]);
 })->name('client.ticket.success');
+
 
 
 /**
@@ -114,3 +116,11 @@ Route::post('/tickets/{id}/message-ps', [ZahtevController::class, 'storeMessageP
 Route::post('/tickets/{id}/status', [ZahtevController::class, 'updateStatus'])->name('tickets.status');
 Route::post('/tickets/{id}/type', [ZahtevController::class, 'updateType'])->name('tickets.type');
 Route::post('/tickets/{id}/reproduced', [ZahtevController::class, 'storeReproduced'])->name('tickets.reproduced');
+
+Route::post('/klijent/login', function (Request $request) {
+    $credentials = $request->only('email', 'password');
+    if (Auth::guard('klijent')->attempt($credentials)) {
+        return redirect()->intended('/client/dashboard');
+    }
+    return back()->withErrors(['email' => 'Pogrešni podaci']);
+});
