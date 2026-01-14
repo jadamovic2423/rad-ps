@@ -109,7 +109,6 @@ Route::get('/client/tickets/{id}', [KlijentController::class, 'show'])
 /**
  * Akcije nad zahtevom
  */
-Route::post('/tickets/{id}/comment', [ZahtevController::class, 'storeComment'])->name('tickets.comment');
 Route::post('/tickets/{id}/message-klijent', [ZahtevController::class, 'storeMessageKlijent'])->name('tickets.message.klijent');
 Route::post('/tickets/{id}/message-ps', [ZahtevController::class, 'storeMessagePS'])->name('tickets.message.ps');
 Route::post('/tickets/{id}/reproduced', [ZahtevController::class, 'storeReproduced'])->name('tickets.reproduced');
@@ -117,7 +116,7 @@ Route::post('/tickets/{id}/reproduced', [ZahtevController::class, 'storeReproduc
 Route::post('/klijent/login', function (Request $request) {
     $credentials = $request->only('email', 'password');
     if (Auth::guard('klijent')->attempt($credentials)) {
-        return redirect()->route('client.dashboard'); // uvek vodi na dashboard
+        return redirect()->route('client.dashboard'); 
     }
     return back()->withErrors(['email' => 'Pogrešni podaci']);
 });
@@ -136,3 +135,7 @@ Route::post('/tickets/{id}/type', [ProductSpecialistController::class, 'updateTy
 
 Route::post('/tickets/{id}/conclusion', [ZahtevController::class, 'storeConclusion'])
     ->name('tickets.conclusion');
+
+
+Route::post('/tickets/{id}/comment', [ZahtevController::class, 'storeComment'])
+    ->name('tickets.comment.ps');

@@ -30,14 +30,13 @@
         .column h3 {
             margin-top: 0;
             text-align: center;
-            background: #cddc39;
             padding: 8px;
             border-bottom: 1px solid #333;
         }
 
 .field {
-    display: flex;       /* polje i vrednost u jednom redu */
-    gap: 8px;            /* razmak između labela i vrednosti */
+    display: flex;     
+    gap: 8px;          
     margin-bottom: 10px;
     align-items: center; /* vertikalno poravnanje */
 }

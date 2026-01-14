@@ -92,13 +92,18 @@ class ZahtevController extends Controller
     // Komentari i komunikacija
     // -------------------
 
-    public function storeComment(Request $request, $id) {
-        ObradaZahteva::create([
-            'zahtev_id' => $id,
-            'komentar_product_sp' => $request->input('komentar'),
+     public function storeComment(Request $request, $id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+
+        $ticket->obradaZahteva()->create([
+            'komentar_product_sp' => $request->input('comment'),
         ]);
-        return back()->with('success', 'Komentar dodat.');
+
+        return redirect()->route('tickets.show', $ticket->id);
     }
+
+
 
     public function storeMessageKlijent(Request $request, $id)
     {
