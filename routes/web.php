@@ -109,7 +109,6 @@ Route::get('/client/tickets/{id}', [KlijentController::class, 'show'])
 /**
  * Akcije nad zahtevom
  */
-Route::post('/tickets/{id}/conclusion', [ZahtevController::class, 'storeConclusion'])->name('tickets.conclusion');
 Route::post('/tickets/{id}/comment', [ZahtevController::class, 'storeComment'])->name('tickets.comment');
 Route::post('/tickets/{id}/message-klijent', [ZahtevController::class, 'storeMessageKlijent'])->name('tickets.message.klijent');
 Route::post('/tickets/{id}/message-ps', [ZahtevController::class, 'storeMessagePS'])->name('tickets.message.ps');
@@ -133,3 +132,7 @@ Route::post('/tickets/{id}/status', [ProductSpecialistController::class, 'update
 
 Route::post('/tickets/{id}/type', [ProductSpecialistController::class, 'updateType'])
     ->name('tickets.type');
+
+
+Route::post('/tickets/{id}/conclusion', [ZahtevController::class, 'storeConclusion'])
+    ->name('tickets.conclusion');

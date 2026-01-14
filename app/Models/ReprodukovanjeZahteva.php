@@ -16,12 +16,13 @@ class ReprodukovanjeZahteva extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'reprodukovanje_pokusaj',
-        'reprodukovan',
-        'komentar',
-        'zahtev_id',
-    ];
+    protected $fillable = ['reprodukovan', 'reprodukovanje_pokusaj', 'komentar', 'zahtev_id'];
+
+    public function ticket()
+    {
+        return $this->belongsTo(Zahtev::class, 'zahtev_id');
+    }
+
 
     /**
      * Get the attributes that should be cast.
@@ -42,8 +43,11 @@ class ReprodukovanjeZahteva extends Model
         return $this->belongsTo(Zahtev::class);
     }
 
-    public function zakljucivanjeAnalize(): HasOne
+    public function zakljucivanjeAnalize()
     {
-        return $this->hasOne(ZakljucivanjeAnalize::class);
+        return $this->hasOne(ZakljucivanjeAnalize::class, 'reprodukovan_id');
     }
+
+
+
 }

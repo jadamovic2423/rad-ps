@@ -7,6 +7,8 @@ use App\Models\Zahtev;
 use App\Models\ObradaZahteva;
 use App\Models\ReprodukovanjeZahteva;
 use App\Models\ZakljucivanjeAnalize;
+use Illuminate\Support\Facades\DB;
+
 
 class ZahtevController extends Controller
 {
@@ -124,45 +126,51 @@ class ZahtevController extends Controller
 
 
 
-    // -------------------
-    // Promena statusa i vrste
-    // -------------------
-
-    public function updateStatus(Request $request, $id) {
-        $ticket = Zahtev::findOrFail($id);
-        $ticket->status_zahteva = $request->input('status');
-        $ticket->save();
-        return back()->with('success', 'Status ažuriran.');
-    }
-
-    public function updateType(Request $request, $id) {
-        $ticket = Zahtev::findOrFail($id);
-        $ticket->vrsta = $request->input('vrsta');
-        $ticket->save();
-        return back()->with('success', 'Vrsta ažurirana.');
-    }
 
     // -------------------
     // Reprodukovanje i zaključak
     // -------------------
 
-    public function storeReproduced(Request $request, $id) {
-        ReprodukovanjeZahteva::create([
-            'zahtev_id' => $id,
-            'reprodukovanje_pokusaj' => $request->input('pokusaj'),
-            'reprodukovan' => $request->input('reprodukovan'),
-            'komentar' => $request->input('komentar'),
+    public function storeReproduced(Request $request, $id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+
+        $ticket->reprodukovanja()->create([
+            'reprodukovanje_pokusaj' => 1,
+            'reprodukovan' => $request->input('reproduced') === 'uspesno',
+            'komentar' => $request->input('komentar', ''),
         ]);
-        return back()->with('success', 'Reprodukovanje sačuvano.');
+
+        return redirect()->route('tickets.show', $ticket->id);
     }
 
-    public function storeConclusion(Request $request, $id) {
-        $reprodukcija = ReprodukovanjeZahteva::where('zahtev_id', $id)->latest()->first();
 
-        $zakljucak = new ZakljucivanjeAnalize();
-        $zakljucak->reprodukovan_id = $reprodukcija->id ?? null;
-        $zakljucak->save();
 
-        return redirect()->route('tickets.show', $id)->with('success', 'Zaključak sačuvan.');
+    public function storeConclusion(Request $request, $id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+        $lastReproduced = $ticket->reprodukovanja()->latest()->first();
+
+        if (!$lastReproduced) {
+            return redirect()->route('tickets.show', $ticket->id)
+                ->with('error', 'Zaključak nije moguće uneti dok ne postoji reprodukovanje.');
+        }
+
+        // snimi zaključak u komentar reprodukovanja
+        $lastReproduced->update([
+            'komentar' => $request->input('conclusion')
+        ]);
+
+        // obeleži da postoji zaključivanje
+        ZakljucivanjeAnalize::updateOrCreate(
+            ['reprodukovan_id' => $lastReproduced->id]
+        );
+
+        return redirect()->route('tickets.show', $ticket->id);
     }
+
+
+
+
+    
 }

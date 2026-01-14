@@ -64,4 +64,10 @@ class Zahtev extends Model
     {
         return $this->hasMany(ReprodukovanjeZahteva::class);
     }
+
+    public function reprodukovanja()
+{
+    return $this->hasMany(ReprodukovanjeZahteva::class);
+}
+
 }

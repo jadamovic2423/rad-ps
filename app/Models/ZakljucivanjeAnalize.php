@@ -16,9 +16,12 @@ class ZakljucivanjeAnalize extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'reprodukovanje_zahteva_id',
-    ];
+    protected $fillable = ['reprodukovan_id', 'conclusion'];
+
+    public function reprodukovanje()
+    {
+        return $this->belongsTo(ReprodukovanjeZahteva::class, 'reprodukovan_id');
+    }
 
     /**
      * Get the attributes that should be cast.

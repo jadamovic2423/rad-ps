@@ -174,7 +174,15 @@
 <div class="actions">
     <div class="left">
         <a class="btn" href="{{ route('tickets.new_tickets') }}">Nazad na listu zahteva</a>
-        <a class="btn" href="{{ route('tickets.show', $ticket->id) }}?modal=conclusion">Zaključak</a>
+
+        @if($ticket->reprodukovanja->isNotEmpty())
+            <a class="btn" href="{{ route('tickets.show', $ticket->id) }}?modal=conclusion">
+                Zaključak
+            </a>
+        @else
+            <button class="btn" disabled>Zaključak (nije dostupno)</button>
+        @endif
+
     </div>
     <div class="right">
         <a class="btn" href="{{ route('tickets.show', $ticket->id) }}?modal=message">Pošalji poruku</a>
@@ -184,6 +192,7 @@
         <a class="btn" href="{{ route('tickets.show', $ticket->id) }}?modal=reproduced">Reprodukovano</a>
     </div>
 </div>
+
 
 {{-- MODALI --}}
 @if(request('modal'))
