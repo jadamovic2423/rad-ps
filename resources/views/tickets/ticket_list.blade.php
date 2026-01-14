@@ -32,7 +32,12 @@
 </table>
 
 <div class="center">
-    <a class="btn" href="{{ route('home') }}">Nazad na početni ekran</a>
+<a class="btn" 
+   href="{{ session('role') === 'ps' ? route('product.dashboard') : route('client.dashboard') }}">
+   Nazad na početni ekran
+</a>
+
+
 </div>
 
 </body>

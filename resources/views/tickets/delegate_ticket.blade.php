@@ -23,7 +23,7 @@
         <label>Product specijalista:</label>
         <select name="product_specialist_id">
             @foreach($specialists as $ps)
-                <option value="{{ $ps->id }}">{{ $ps->name }}</option>
+                <option value="{{ $ps->id }}">{{ $ps->product_specialista }}</option>
             @endforeach
         </select>
 

@@ -3,39 +3,52 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Zahtev;   // <- dodaj import modela Zahtev
+use App\Models\ProductSpecialist;
 
 class ProductSpecialistController extends Controller
 {
-    public function index() {
-        return ProductSpecialist::all();
+    public function index(Request $request)
+    {
+        $username = $request->session()->get('username', 'Nepoznat');
+        return view('tickets.product_specialist_home', compact('username'));
     }
 
-    public function store(Request $request) {
-        $data = $request->validate([
-            'product_specialista' => 'required|string|max:30',
-            'senioritet' => 'required|in:junior,medior,senior',
-            'status' => 'required|in:aktivan,neaktivan',
-        ]);
-        return ProductSpecialist::create($data);
+    public function tickets()
+    {
+        // lista svih zahteva
+        $tickets = Zahtev::all();
+        return view('tickets.product_specialist_tickets', compact('tickets'));
     }
 
-    public function show(ProductSpecialist $productSpecialist) {
-        return $productSpecialist;
+    public function newTickets()
+    {
+        // filtriraj samo zahteve u statusu "Novi"
+        $tickets = Zahtev::where('status', 'Novi')->get();
+
+        return view('tickets.new_tickets', compact('tickets'));
     }
 
-    public function update(Request $request, ProductSpecialist $productSpecialist) {
-        $data = $request->validate([
-            'product_specialista' => 'sometimes|string|max:30',
-            'senioritet' => 'sometimes|in:junior,medior,senior',
-            'status' => 'sometimes|in:aktivan,neaktivan',
-        ]);
-        $productSpecialist->update($data);
-        return $productSpecialist;
+        public function list()
+    {
+        // Uzmi sve tikete (po potrebi filtriraj)
+        $tickets = Zahtev::all();
+
+        // Vrati blade koji si poslala: resources/views/tickets/ticket_list.blade.php
+        return view('tickets.ticket_list', compact('tickets'));
     }
 
-    public function destroy(ProductSpecialist $productSpecialist) {
-        $productSpecialist->delete();
-        return response()->json(['message' => 'Product specialist obrisan']);
+    public function show($id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+
+        if (session('role') === 'ps') {
+            return view('tickets.ticket_detail_ps', compact('ticket'));
+        }
+
+        return view('tickets.ticket_detail_client', compact('ticket'));
     }
+
 }
+
 

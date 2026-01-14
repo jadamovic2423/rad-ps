@@ -70,9 +70,10 @@
 <body>
 
     {{-- Izloguj se --}}
-    <div class="logout">
-        <a href="{{ route('logout') }}">Izloguj se</a>
-    </div>
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button class="logout">Izloguj se</button>
+    </form>
 
     <div class="container">
         <h1>Tiketing sistem</h1>
@@ -80,12 +81,12 @@
 
         <div class="actions">
             {{-- Pregled svih zahteva --}}
-            <a href="{{ route('tickets.index') }}">
+            <a href="{{ route('tickets.new_tickets') }}">
                 Pregled liste zahteva
             </a>
 
             {{-- Pregled zahteva u statusu "Novi" --}}
-            <a href="{{ route('tickets.new') }}">
+            <a href="{{ route('tickets.delegate_ticket') }}">
                 Pregled zahteva "Novi"
             </a>
         </div>

@@ -35,8 +35,9 @@
 </table>
 
 <div class="top">
-    <a class="btn" href="{{ route('home') }}">Nazad na početni ekran</a>
+    <a class="btn" href="{{ route('product.dashboard') }}">Nazad na početni ekran</a>
 </div>
+
 
 </body>
 </html>

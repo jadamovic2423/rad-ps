@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Klijent;
+use App\Models\Zahtev;
 
 class KlijentController extends Controller
 {
@@ -19,5 +20,14 @@ class KlijentController extends Controller
     public function create()
     {
         return view('tickets.create_ticket');
+    }
+
+    public function list()
+    {
+        // Uzmi sve zahteve za klijenta (po potrebi filtriraj po user_id iz sessiona)
+        $tickets = Zahtev::all();
+
+        return view('tickets.ticket_list', compact('tickets'));
+
     }
 }
