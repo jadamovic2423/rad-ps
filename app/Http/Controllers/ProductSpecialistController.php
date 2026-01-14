@@ -24,10 +24,11 @@ class ProductSpecialistController extends Controller
     public function newTickets()
     {
         // filtriraj samo zahteve u statusu "Novi"
-        $tickets = Zahtev::where('status', 'Novi')->get();
+        $tickets = Zahtev::where('status_zahteva', 'novi')->get();
 
         return view('tickets.new_tickets', compact('tickets'));
     }
+
 
         public function list()
     {
@@ -49,6 +50,22 @@ class ProductSpecialistController extends Controller
         return view('tickets.ticket_detail_client', compact('ticket'));
     }
 
+    public function delegate($id)
+    {
+        $ticket = Zahtev::findOrFail($id);
+        $specialists = ProductSpecialist::all();
+
+        return view('tickets.delegate_ticket', compact('ticket', 'specialists'));
+    }
+
+    public function delegateList()
+    {
+        // uzmi sve zahteve u statusu "Novi"
+        $tickets = Zahtev::where('status', 'Novi')->get();
+        $specialists = ProductSpecialist::all();
+
+        return view('tickets.delegate_ticket', compact('tickets', 'specialists'));
+    }
 }
 
 

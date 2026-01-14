@@ -86,9 +86,10 @@
             </a>
 
             {{-- Pregled zahteva u statusu "Novi" --}}
-            <a href="{{ route('tickets.delegate_ticket') }}">
+            <a href="{{ route('tickets.new_tickets') }}">
                 Pregled zahteva "Novi"
             </a>
+
         </div>
     </div>
 

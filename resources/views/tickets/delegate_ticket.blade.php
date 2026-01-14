@@ -16,7 +16,12 @@
 <body>
 
 <div class="modal">
-    <h3>Delegiranje</h3>
+    <h3>Delegiranje zahteva</h3>
+
+    <p><strong>ID:</strong> {{ $ticket->id }}</p>
+    <p><strong>Naziv:</strong> {{ $ticket->naziv }}</p>
+
+    <a class="btn" href="{{ route('tickets.show', $ticket->id) }}">Opširnije</a>
 
     <form method="POST" action="{{ route('tickets.delegate.store', $ticket->id) }}">
         @csrf
@@ -29,7 +34,7 @@
 
         <p>Status zahteva biće: <strong>Otvoren</strong></p>
 
-        <button type="submit">Potvrdi</button>
+        <button type="submit">Delegiraj</button>
     </form>
 </div>
 

@@ -19,15 +19,16 @@ class ObradaZahtevaController extends Controller
     }
 
 
-    public function delegateStore($id)
+    public function storeDelegation($id)
     {
         $ticket = Zahtev::findOrFail($id);
         $ticket->product_specialist_id = request('product_specialist_id');
-        $ticket->status_zahteva = 'otvoren'; $ticket->save();
+        $ticket->status_zahteva = 'otvoren';
         $ticket->save();
 
         return redirect()->route('tickets.new_tickets')
-                         ->with('success', 'Zahtev je uspešno delegiran.');
+                        ->with('success', 'Zahtev je uspešno delegiran.');
     }
+
 }
 
