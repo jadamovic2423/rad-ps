@@ -179,13 +179,12 @@ button.btn {
     display: inline-block;
     padding: 6px 12px;
     background: #8bc34a;
-    border: 2px solid #000;   /* jači okvir */
+    border: 2px solid #000;   
     text-decoration: none;
     color: #000;
     font-size: 22px;
     font-weight: bold;
     white-space: nowrap;
-    border-radius: 4px;       /* opciono: blago zaobljeni uglovi */
 }
 
 /* Labela normalna, vrednost boldovana */
@@ -238,6 +237,14 @@ button.btn {
     border: 2px solid #999;     /* svetlosiva ivica */
     cursor: not-allowed;        /* pokazivač kao za disabled */
     font-weight: bold;
+}
+.field strong,
+.field span,
+.field-line .value {
+    font-size: 18px;       /* ujednačeno za sve vrednosti */
+    white-space: normal;
+    word-break: break-word;
+    flex: 1;
 }
 
     </style>

@@ -29,12 +29,14 @@
         }
 
         .container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;   /* podiže sadržaj ka vrhu */
+    gap: 20px;           /* razmak između elemenata */
+}
+
 
         h1 {
             margin-bottom: 10px;
@@ -51,20 +53,32 @@
             gap: 15px;
         }
 
-        .actions a {
-            width: 260px;
-            text-align: center;
-            padding: 12px;
-            border: 1px solid #000;
-            background-color: #9acd66;
-            text-decoration: none;
-            color: #000;
-            font-weight: bold;
-        }
+     .actions a {
+    display: inline-block;
+    width: fit-content;       /* širina prati dužinu teksta */
+    text-align: center;
+    padding: 12px 25px;       /* unutrašnji razmak */
+    border: 2px solid #000;
+    background-color: #9acd66;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+}
 
-        .actions a:hover {
-            background-color: #7fbf4d;
-        }
+.logout {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: 2px solid #000;   /* jača bordura */
+    padding: 8px 12px;
+    background: #ddd;         /* siva pozadina */
+    font-weight: bold;        /* boldovan tekst */
+    font-size: 18px;
+}
+
     </style>
 </head>
 <body>
@@ -74,6 +88,7 @@
         @csrf
         <button class="logout">Izloguj se</button>
     </form>
+
 
     <div class="container">
         <h1>Tiketing sistem</h1>
