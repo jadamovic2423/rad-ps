@@ -108,6 +108,35 @@
     background-size: 100% 28px;
 }
 
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+.modal {
+    width: 420px;
+    background: #f5efe6;
+    border: 2px solid #000;
+    padding: 20px;
+    text-align: center;
+}
+.modal h3 {
+    margin-bottom: 15px;
+}
+.btn {
+    background: #8ccf6b;
+    border: 2px solid #000;
+    padding: 8px 18px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
     </style>
 </head>
 
@@ -126,22 +155,22 @@
         <div class="left">
             <div class="form-row">
                 <label for="naziv">Naziv:</label>
-                <input type="text" name="naziv" id="naziv" class="line-input" required>
+                <input type="text" name="naziv" id="naziv" class="line-input">
             </div>
 
             <div class="form-row">
                 <label for="vrsta">Vrsta:</label>
-                <select name="vrsta" id="vrsta" required>
+                <select name="vrsta" id="vrsta">
                     <option value="">odaberite</option>
                     <option value="bug">bug</option>
-                    <option value="razvoj">novi razvoj</option>
+                    <option value="novi razvoj">novi razvoj</option>
                     <option value="regulativa">regulativa</option>
                 </select>
             </div>
 
             <div class="form-row">
                 <label for="prioritet">Prioritet:</label>
-                <select name="prioritet" id="prioritet" required>
+                <select name="prioritet" id="prioritet">
                     <option value="">odaberite</option>
                     <option value="nizak">nizak</option>
                     <option value="normalan">normalan</option>
@@ -162,7 +191,7 @@
             <div class="form-row" style="align-items:flex-start;">
                 <div class="form-row" style="align-items:flex-start;">
                     <label for="sadrzaj">Opis:</label>
-                    <textarea name="sadrzaj" id="sadrzaj" class="notebook" rows="5" required></textarea>
+                    <textarea name="sadrzaj" id="sadrzaj" class="notebook" rows="5"></textarea>
                 </div>
 
             </div>
@@ -174,3 +203,18 @@
             <button type="button" class="cancel">Odustani</button>
         </a>
         <button type="submit">Kreiraj</button>
+    </div>
+    </form>  {{-- <- zatvaranje forme ovde --}}
+
+    {{-- ALERT MODAL --}}
+    @if(session('alert'))
+    <div class="overlay">
+        <div class="modal">
+            <h3>Obaveštenje</h3>
+            <p>{{ session('alert') }}</p>
+            <button class="btn" onclick="document.querySelector('.overlay').style.display='none'">
+                U redu
+            </button>
+        </div>
+    </div>
+    @endif

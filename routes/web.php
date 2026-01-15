@@ -40,9 +40,8 @@ Route::post('/client/ticket/store', [KlijentController::class, 'store'])->name('
  * HiFi ekran 3A – Obaveštenje
  */
 Route::get('/client/ticket/alert', function () {
-    return view('tickets.create_ticket_alert');
+    return view('tickets.modals.alert');
 })->name('client.ticket.alert');
-
 
 /**
  * HiFi ekran 3B – Novi zahtev sa fajlom

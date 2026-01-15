@@ -7,7 +7,7 @@ use App\Models\Klijent;
 use App\Models\Zahtev;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;  
-
+use Illuminate\Support\Facades\Validator;
 
 
 class KlijentController extends Controller
@@ -48,7 +48,7 @@ class KlijentController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'naziv'     => 'required|string|max:255',
             'vrsta'     => 'required|string',
             'prioritet' => 'required|string',
@@ -56,36 +56,40 @@ class KlijentController extends Controller
             'fajl'      => 'nullable|file|max:2048',
         ]);
 
+        if ($validator->fails()) {
+            return redirect()
+                ->route('client.ticket.create')
+                ->with('alert', 'Polja naziv, opis, vrsta i/ili prioritet nisu popunjeni.');
+        }
+
+
+        $validated = $validator->validated();
+
         $ticket = new Zahtev();
         $ticket->naziv           = $validated['naziv'];
         $ticket->vrsta           = $validated['vrsta'];
         $ticket->prioritet       = $validated['prioritet'];
         $ticket->sadrzaj         = $validated['sadrzaj'];
-        $ticket->status_zahteva  = 'novi'; // koristi vrednosti iz enum-a
+        $ticket->status_zahteva  = 'novi';
         $ticket->datum_kreiranja = Carbon::now();
-
-        // 🔑 obavezne kolone iz migracije
-        // trenutno zakucane vrednosti da constrainti ne pucaju
-        $ticket->klijent_id = 1; 
-        $ticket->product_specialist_id = 1; 
+        $ticket->klijent_id = auth()->id() ?? 1;
+        $ticket->product_specialist_id = 1;
 
         if ($request->hasFile('fajl')) {
             $file = $request->file('fajl');
-            $originalName = $file->getClientOriginalName(); // ovo je originalni naziv
-
-            // snimi fajl sa originalnim imenom
+            $originalName = $file->getClientOriginalName();
             $path = $file->storeAs('tickets', $originalName, 'public');
-
-            $ticket->fajl = $originalName; // ili $path ako želiš putanju
+            $ticket->fajl = $path;
         }
-
 
         $ticket->save();
 
-        // nakon kreiranja prikazuje success.blade.php
         return view('tickets.success', ['ticketId' => $ticket->id]);
-
     }
+
+
+
+
 
     public function uploadFile(Request $request, $id)
     {
