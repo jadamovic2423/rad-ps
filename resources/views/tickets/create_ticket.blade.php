@@ -12,7 +12,9 @@
         }
         .container {
             margin: 0 auto;
-            width: 900px; /* prošireno da stane 2 kolone */
+            width: 60%;          /* zauzima 60% širine ekrana */
+            max-width: 900px;    /* da ne ode previše široko na velikim ekranima */
+            min-width: 600px;    /* da ne bude previše usko na manjim ekranima */
             text-align: left;
         }
 
@@ -69,16 +71,37 @@
 
         .button-row {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* jedno levo, drugo desno */
             margin-top: 30px;
         }
+
+        .button-row a {
+            display: block;
+            width: fit-content;   /* link prati širinu dugmeta */
+            text-decoration: none;
+            color: black;
+        }
+
         .button-row button {
             font-size: 18px;
             padding: 10px 30px;
+            border: 2px solid #000;
+            font-weight: bold;
+            cursor: pointer;
         }
+
+        /* Odustani dugme */
         .cancel {
             background-color: #ddd;
+            color: black;
         }
+
+        /* Kreiraj dugme */
+        .create {
+            background-color: #7fc85c;
+            color: black;
+        }
+
 
         .form-row select {
             font-size: 20px;
@@ -88,52 +111,107 @@
         }
 
         textarea.notebook {
-    width: 100%;
-    height: auto;
-    min-height: 140px;       /* visina za ~5 linija */
-    background: transparent; /* nema pozadine */
-    border: none;            /* nema okvira */
-    resize: none;
-    font-size: 20px;
-    line-height: 28px;       /* razmak između linija */
-    outline: none;
-    padding: 0;
-    /* crtamo linije pomoću repeating-linear-gradient */
-    background-image: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 27px,
-        #333 28px
-    );
-    background-size: 100% 28px;
+            width: 100%;
+            height: auto;
+            min-height: 140px;       /* visina za ~5 linija */
+            background: transparent; /* nema pozadine */
+            border: none;            /* nema okvira */
+            resize: none;
+            font-size: 20px;
+            line-height: 28px;       /* razmak između linija */
+            outline: none;
+            padding: 0;
+            /* crtamo linije pomoću repeating-linear-gradient */
+            background-image: repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 27px,
+                #333 28px
+            );
+            background-size: 100% 28px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        .modal {
+            width: 420px;
+            background: #f5efe6;
+            border: 2px solid #000;
+            padding: 20px;
+            text-align: center;
+        }
+        .modal h3 {
+            margin-bottom: 15px;
+        }
+        .btn {
+            background: #8ccf6b;
+            border: 2px solid #000;
+            padding: 8px 18px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .form-row label,
+        .form-row .line-input,
+        textarea.notebook,
+        .form-row input[type="file"] {
+            font-size: 24px;
+        }
+        .form-row select {
+            font-size: 16px;   /* manji font za liste */
+            padding: 6px;
+            width: auto;
+            flex: 0;
+        }
+
+/* Labeli i polja */
+.form-row label,
+.form-row .line-input,
+textarea.notebook,
+.form-row input[type="file"],
+.form-row select {
+    font-weight: normal;   /* uklanja bold */
+    font-size: 24px;       /* veći font za čitljivost */
 }
 
-.overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-.modal {
-    width: 420px;
-    background: #f5efe6;
+/* Dugmad ostaju boldovana */
+.button-row button {
+    font-size: 18px;
+    font-weight: bold;     /* ostaje bold */
+    padding: 10px 30px;
     border: 2px solid #000;
-    padding: 20px;
-    text-align: center;
-}
-.modal h3 {
-    margin-bottom: 15px;
-}
-.btn {
-    background: #8ccf6b;
-    border: 2px solid #000;
-    padding: 8px 18px;
     cursor: pointer;
-    font-weight: bold;
+}
+
+.section-title {
+    font-weight: normal;   /* uklanja bold */
+    font-size: 22px;
+    text-align: left;
+    margin-left: calc(50% - 116px); /* pomeraj kao kod dugmeta */
+}
+
+ h2 {
+            font-weight: normal;      /* uklanja bold sa naslova "Početni ekran" */
+        }
+
+.form-row select {
+    font-size: 18px;   /* veličina za sam dropdown */
+    padding: 6px;
+    width: auto;
+    flex: 0;
+    background: #eef7c4;
+}
+
+.form-row select option {
+    font-size: 16px;   /* veličina za stavke u listi, uključujući "odaberite" */
 }
 
 
@@ -202,8 +280,9 @@
         <a href="{{ route('client.dashboard') }}">
             <button type="button" class="cancel">Odustani</button>
         </a>
-        <button type="submit">Kreiraj</button>
+        <button type="submit" class="create">Kreiraj</button>
     </div>
+
     </form>  {{-- <- zatvaranje forme ovde --}}
 
     {{-- ALERT MODAL --}}

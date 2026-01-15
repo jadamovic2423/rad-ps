@@ -40,6 +40,8 @@
             cursor: pointer;
             font-weight: bold;
         }
+
+
     </style>
 </head>
 <body>
@@ -47,7 +49,7 @@
 <div class="overlay">
     <div class="modal">
         <h3>Obaveštenje</h3>
-        <p>Polja naziv, opis, vrsta i/ili prioritet nisu popunjeni.</p>
+        <p>Polja naziv, opis,<br> vrsta i/ili prioritet <br>nisu popunjeni.</p>
         <button class="btn" onclick="window.history.back()">U redu</button>
     </div>
 </div>

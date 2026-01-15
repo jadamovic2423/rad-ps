@@ -26,6 +26,22 @@
             color: #000;
             display: inline-block;
         }
+
+        .box h2 {
+    font-size: 26px;      /* povećan font za naslov */
+    font-weight: normal;  /* uklanja bold */
+    margin-bottom: 20px;
+}
+
+.box p {
+    font-size: 22px;      /* povećan font za tekst sa ID-jem */
+}
+
+.box p strong {
+    font-weight: bold;    /* ID ostaje boldovan */
+    font-size: 24px;      /* dodatno naglašen */
+}
+
     </style>
 </head>
 <body>

@@ -27,7 +27,6 @@
         .column h3 {
             margin-top: 0;
             text-align: center;
-            background: #cddc39;
             padding: 8px;
             border-bottom: 1px solid #333;
         }
@@ -49,7 +48,6 @@
             justify-content: space-between;
             padding: 20px 40px;
             background: #dfe9c7;
-            border-top: 1px solid #333;
         }
 
         .actions .left,
@@ -77,7 +75,7 @@
             font-size: 22px;
             font-weight: bold;
             white-space: nowrap;
-            border-radius: 4px;
+
         }
 
         .overlay {
@@ -184,6 +182,27 @@
 
 .column .messages {
     flex: 1;                  /* zauzima sav prostor iznad */
+}
+
+.column h3 {
+    font-size: 26px;      /* veći font za naslove Zahtev i Komunikacija */
+}
+
+.field {
+    font-size: 22px;      /* veći font za ceo red (labela + vrednost) */
+}
+
+.field strong {
+    font-size: 22px;      /* labela (Naziv:, Opis:, ...) */
+    font-weight: bold;    /* ostaje bold da se razlikuje od vrednosti */
+}
+
+.field span {
+    font-size: 22px;      /* vrednost polja (sdsadasadasd, bug, nizak...) */
+}
+
+.column p {
+    font-size: 20px;      /* veći font za poruke u Komunikaciji */
 }
 
     </style>

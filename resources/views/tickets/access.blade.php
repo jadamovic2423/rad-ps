@@ -25,20 +25,27 @@
             margin-top: 20px;
             padding: 10px 30px;
             background-color: #7fc85c;
-            border: 1px solid #333;
+            border: 2px solid #000;   /* jača bordura */
             cursor: pointer;
+            font-weight: bold;        /* boldovan tekst */
+            font-size: 20px;
         }
+
+        h2 {
+            font-weight: normal;      /* uklanja bold sa naslova "Pristup" */
+        }
+
 
         .form-row {
             display: flex;
             align-items: center;
             margin-bottom: 15px;
         }
-.form-row label {
-    width: auto;       /* uklanjamo fiksnu širinu */
-    margin-right: 5px; /* mali razmak do radio dugmadi */
-    font-weight: bold;
-}
+        .form-row label {
+            width: auto;       /* uklanjamo fiksnu širinu */
+            margin-right: 5px; /* mali razmak do radio dugmadi */
+            font-weight: bold;
+        }
 
 
         .form-row input[type="text"] {

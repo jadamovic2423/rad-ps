@@ -56,7 +56,6 @@
             justify-content: space-between;
             padding: 20px 40px;
             background: #dfe9c7;
-            border-top: 1px solid #333;
         }
 
         .actions .left,
@@ -84,7 +83,7 @@
             font-size: 22px;
             font-weight: bold;
             white-space: nowrap;
-            border-radius: 4px;
+            
         }
 
         .overlay {
@@ -136,10 +135,10 @@
 .pagination li a,
 .pagination li span {
     display: inline-block;
-    width: 20px;       /* manja širina kružića */
-    height: 20px;      /* manja visina kružića */
-    line-height: 22px; /* centriranje teksta */
-    font-size: 12px;   /* manji font */
+    width: 20px;       
+    height: 20px;      
+    line-height: 22px; 
+    font-size: 12px;  
     text-align: center;
     border-radius: 50%;
     background: #8bc34a;
@@ -175,6 +174,71 @@
     flex: 1;                  /* zauzima sav prostor iznad */
 }
 
+.btn,
+button.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #8bc34a;
+    border: 2px solid #000;   /* jači okvir */
+    text-decoration: none;
+    color: #000;
+    font-size: 22px;
+    font-weight: bold;
+    white-space: nowrap;
+    border-radius: 4px;       /* opciono: blago zaobljeni uglovi */
+}
+
+/* Labela normalna, vrednost boldovana */
+.field label {
+    font-weight: normal;
+    font-size: 22px;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.field strong {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+
+.field strong,
+.field span {
+    font-size: 22px;             
+    white-space: normal;         
+    word-break: break-word;      
+    flex: 1;                     
+}
+.field-line {
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.field-line .label {
+    font-weight: normal;
+    white-space: nowrap;
+    margin-right: 6px;
+    font-size:22px;
+}
+
+.field-line .value {
+    font-weight: bold;
+    word-break: break-word;
+}
+
+
+.column {
+    display: block;      /* umesto flex, da sadržaj ide prirodno */
+}
+
+.btn.disabled {
+    background: #ccc;           /* siva pozadina */
+    color: #666;                /* tamnosiva slova */
+    border: 2px solid #999;     /* svetlosiva ivica */
+    cursor: not-allowed;        /* pokazivač kao za disabled */
+    font-weight: bold;
+}
 
     </style>
 </head>
@@ -208,15 +272,18 @@
         <h3>Zahtev {{ str_pad($ticket->id, 4, '0', STR_PAD_LEFT) }}</h3>
 
 
-        <div class="field"><strong>Naziv:</strong> <span>{{ $ticket->naziv }}</span></div>
-        <div class="field"><strong>Opis:</strong> <span>{{ $ticket->sadrzaj }}</span></div>
-        <div class="field"><strong>Vrsta:</strong> <span>{{ $ticket->vrsta }}</span></div>
-        <div class="field"><strong>Prioritet:</strong> <span>{{ $ticket->prioritet }}</span></div>
-        <div class="field"><strong>Status:</strong> <span>{{ $ticket->status_zahteva }}</span></div>
-        <div class="field">
-            <strong>Fajlovi:</strong>
-            <span>{{ $ticket->fajl ?? '/' }}</span>
-        </div>
+        <p class="field-line">
+            <span class="label">Naziv:</span>
+            <span class="value">{{ $ticket->naziv }}</span><br>
+            <span class="label">Opis:</span>
+            <span class="value">{{ $ticket->sadrzaj }}</span>
+        </p>
+
+        <div class="field"><label>Vrsta:</label> <strong>{{ $ticket->vrsta }}</strong></div>
+        <div class="field"><label>Prioritet:</label> <strong>{{ $ticket->prioritet }}</strong></div>
+        <div class="field"><label>Status:</label> <strong>{{ $ticket->status_zahteva }}</strong></div>
+        <div class="field"><label>Fajlovi:</label> <strong>{{ $ticket->fajl ?? '/' }}</strong></div>
+
 
     </div>
 
@@ -248,14 +315,14 @@
 
 <div class="actions">
     <div class="left">
-        <a class="btn" href="{{ route('tickets.new_tickets') }}">Nazad na listu zahteva</a>
+        <a class="btn" href="{{ route('tickets.list') }}">Nazad na listu zahteva</a>
 
         @if($ticket->reprodukovanja->isNotEmpty())
             <a class="btn" href="{{ route('tickets.show', $ticket->id) }}?modal=conclusion">
                 Zaključak
             </a>
         @else
-            <button class="btn" disabled>Zaključak (nije dostupno)</button>
+            <span class="btn disabled">Zaključak</span>
         @endif
 
     </div>

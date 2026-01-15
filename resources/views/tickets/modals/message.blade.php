@@ -1,4 +1,14 @@
-<h3 style="margin-bottom: 20px; font-size: 22px;">Poruka</h3>
+<style>
+    .modal-title {
+    font-size: 26px;     
+    font-weight: normal; 
+    margin-bottom: 20px;
+    text-align: center;  
+}
+
+</style>
+
+<h3 class="modal-title">Poruka</h3>
 
 <form method="POST" action="{{ route('tickets.message', $ticket->id) }}">
     @csrf
@@ -7,7 +17,7 @@
               rows="3"
               style="
                 width: 100%;
-                font-size: 18px;
+                font-size: 26px;
                 padding: 6px;
                 background: repeating-linear-gradient(
                     to bottom,
